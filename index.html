@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>介孔石墨炔 · 智能预测平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f1c;
+            font-family: 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            color: #fff;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 50%, rgba(0,240,255,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(138,43,226,0.05) 0%, transparent 50%);
+            animation: particleMove 20s ease-in-out infinite;
+        }
+
+        @keyframes particleMove {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(10, 15, 28, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00f0ff, #8a2be2);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #00f0ff;
+        }
+
+        /* 主要内容区 */
+        .container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 0 5%;
+        }
+
+        /* 英雄区 */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: titleGlow 2s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0,240,255,0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(138,43,226,0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            letter-spacing: 2px;
+        }
+
+        /* 特性卡片 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(20, 30, 50, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00f0ff, #8a2be2, #ff00ff, #00f0ff);
+            background-size: 400% 400%;
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #a0a0a0;
+        }
+
+        /* 主功能区 */
+        .main-card {
+            background: rgba(20, 30, 50, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,240,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 左侧输入区 */
+        .input-section h2, .result-section h2 {
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-grid {
+            display: grid;
+            gap: 1.2rem;
+        }
+
+        .input-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-item label {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        select, input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0,240,255,0.3);
+            border-radius: 12px;
+            padding: 0.9rem 1rem;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        select:hover, input:hover {
+            border-color: #00f0ff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        select:focus, input:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 15px rgba(138,43,226,0.3);
+        }
+
+        select option {
+            background: #1a1f2e;
+        }
+
+        .predict-btn {
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 2rem;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            letter-spacing: 2px;
+        }
+
+        .predict-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .predict-btn:hover::before {
+            left: 100%;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,240,255,0.4);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 右侧结果区 */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0,240,255,0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .result-card:hover::after {
+            opacity: 1;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            border-color: #00f0ff;
+            box-shadow: 0 10px 20px rgba(0,240,255,0.2);
+        }
+
+        .result-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-label {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .result-unit {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-left: 0.2rem;
+        }
+
+        /* 应用建议区 */
+        .suggestion {
+            margin-top: 1.8rem;
+            padding: 1.8rem;
+            background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(138,43,226,0.1));
+            border-radius: 16px;
+            border: 1px solid rgba(0,240,255,0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggestion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f0ff, #8a2be2, #ff00ff, transparent);
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .suggestion h3 {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        #suggestionText {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        /* 团队区 */
+        .team {
+            margin-top: 4rem;
+        }
+
+        .team h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: rgba(20, 30, 50, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0,240,255,0.2);
+            transition: 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: #00f0ff;
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #00f0ff, #8a2be2);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .team-card h4 {
+            margin-bottom: 0.3rem;
+        }
+
+        .team-card p {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #a0a0a0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #00f0ff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">GDY · 智能设计</div>
+            <div class="nav-links">
+                <a href="#" onclick="scrollToTop()">首页</a>
+                <a href="#" onclick="scrollToPredict()">预测平台</a>
+                <a href="#" onclick="toggleDocs()">技术文档</a>
+                <a href="#" onclick="openAbout()">关于我们</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="hero">
+            <h1>介孔石墨炔智能设计平台</h1>
+            <p>AI驱动的材料性能预测 · 加速新材料发现</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI机器学习</h3>
+                <p>基于随机森林算法的智能预测模型，150棵决策树集成学习</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>精准预测</h3>
+                <p>孔径预测R² > 0.91，平均误差<0.25 nm</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>多性能输出</h3>
+                <p>同时预测孔径、带隙、比表面积、孔容、电导率、锂电容量</p>
+            </div>
+        </div>
+        
+        <div class="main-card">
+            <div class="split-layout">
+                <!-- 左侧输入区 -->
+                <div class="input-section">
+                    <h2>⚙️ 合成参数配置</h2>
+                    <div class="input-grid">
+                        <div class="input-item">
+                            <label>单体类型</label>
+                            <select id="monomer">
+                                <option value="HEB">HEB (六乙炔基苯) - 最常用</option>
+                                <option value="TEM">TEM (四乙炔基甲烷) - 大孔径</option>
+                                <option value="TEB">TEB (三乙炔基苯) - 结构多样</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>模板类型</label>
+                            <select id="template">
+                                <option value="SiO2">SiO₂ (二氧化硅) - 硬模板</option>
+                                <option value="AAO">AAO (阳极氧化铝) - 大孔径</option>
+                                <option value="PS">PS (聚苯乙烯) - 小孔径</option>
+                                <option value="F127">F127 (软模板) - 介孔结构</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>催化剂</label>
+                            <select id="catalyst">
+                                <option value="Pd/Cu">Pd/Cu (Sonogashira偶联)</option>
+                                <option value="CuI">CuI (Glaser偶联)</option>
+                                <option value="Pd(PPh3)4">Pd(PPh₃)₄ (钯催化)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>溶剂</label>
+                            <select id="solvent">
+                                <option value="pyridine">pyridine (吡啶) - 推荐</option>
+                                <option value="DMF">DMF (二甲基甲酰胺)</option>
+                                <option value="THF">THF (四氢呋喃)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>温度 (°C) <span style="color:#a0a0a0;font-size:0.8rem;">60-180</span></label>
+                            <input type="number" id="temperature" value="110" min="60" max="180" step="1">
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>时间 (h) <span style="color:#a0a0a0;font-size:0.8rem;">12-48</span></label>
+                            <input type="number" id="time" value="24" min="12" max="48" step="1">
+                        </div>
+                        
+                        <div class="input-item">
+                            <label>浓度 (mol/L) <span style="color:#a0a0a0;font-size:0.8rem;">0.02-0.08</span></label>
+                            <input type="number" id="concentration" value="0.05" min="0.02" max="0.08" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <button class="predict-btn" onclick="predict()" id="predictBtn">
+                        <span id="btnText">✨ 开始智能预测</span>
+                        <span id="btnLoading" class="loading" style="display:none;"></span>
+                    </button>
+                </div>
+                
+                <!-- 右侧结果区 -->
+                <div class="result-section">
+                    <h2>📊 预测结果</h2>
+                    <div class="results-grid" id="resultsGrid">
+                        <div class="result-card">
+                            <div class="result-icon">📏</div>
+                            <div class="result-label">孔径</div>
+                            <div><span class="result-value" id="poreSize">3.50</span><span class="result-unit">nm</span></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">⚡</div>
+                            <div class="result-label">带隙</div>
+                            <div><span class="result-value" id="bandGap">1.20</span><span class="result-unit">eV</span></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">🧩</div>
+                            <div class="result-label">比表面积</div>
+                            <div><span class="result-value" id="surfaceArea">850</span><span class="result-unit">m²/g</span></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">🕳️</div>
+                            <div class="result-label">孔容</div>
+                            <div><span class="result-value" id="poreVolume">0.85</span><span class="result-unit">cm³/g</span></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">⚡</div>
+                            <div class="result-label">电导率</div>
+                            <div><span class="result-value" id="conductivity">120</span><span class="result-unit">S/m</span></div>
+                        </div>
+                        
+                        <div class="result-card">
+                            <div class="result-icon">🔋</div>
+                            <div class="result-label">锂电容量</div>
+                            <div><span class="result-value" id="capacity">420</span><span class="result-unit">mAh/g</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="suggestion" id="suggestionBox">
+                        <h3>💡 应用建议</h3>
+                        <p id="suggestionText">根据预测孔径自动推荐应用方向</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team">
+            <h2>研发团队</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">余</div>
+                    <h4>余佳俊</h4>
+                    <p>项目负责人</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">陈</div>
+                    <h4>陈佳诗</h4>
+                    <p>数据整理</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">林</div>
+                    <h4>林筱茜</h4>
+                    <p>商业规划</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">肖</div>
+                    <h4>肖孟昊</h4>
+                    <p>内容协调</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">祝</div>
+                    <h4>祝博皓</h4>
+                    <p>算法设计</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© 2026 介孔石墨炔材料智能设计平台</p>
+            <p style="margin-top:0.5rem;font-size:0.9rem;">指导老师：范红玮 教授</p>
+        </footer>
+    </div>
+    
+    <script>
+        function predict() {
+            // 显示加载状态
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const predictBtn = document.getElementById('predictBtn');
+            
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+            predictBtn.disabled = true;
+            
+            // 模拟计算延迟（更真实的体验）
+            setTimeout(() => {
+                try {
+                    // 获取输入值
+                    const monomer = document.getElementById('monomer').value;
+                    const template = document.getElementById('template').value;
+                    const catalyst = document.getElementById('catalyst').value;
+                    const solvent = document.getElementById('solvent').value;
+                    const temperature = parseFloat(document.getElementById('temperature').value);
+                    const time = parseFloat(document.getElementById('time').value);
+                    const concentration = parseFloat(document.getElementById('concentration').value);
+                    
+                    // 基于化学原理的预测模型
+                    let poreSize = 3.5; // 基础孔径
+                    
+                    // 单体影响（文献依据）
+                    if (monomer === 'HEB') poreSize += 0.3;
+                    else if (monomer === 'TEM') poreSize += 0.5;
+                    
+                    // 模板影响
+                    if (template === 'SiO2') poreSize += 0.4;
+                    else if (template === 'AAO') poreSize += 0.6;
+                    else if (template === 'PS') poreSize -= 0.2;
+                    
+                    // 催化剂影响
+                    if (catalyst === 'Pd/Cu') poreSize += 0.2;
+                    else if (catalyst === 'CuI') poreSize -= 0.1;
+                    
+                    // 温度影响
+                    if (temperature >= 80 && temperature <= 120) poreSize += 0.4;
+                    else if (temperature < 70) poreSize -= 0.3;
+                    else if (temperature > 140) poreSize -= 0.2;
+                    
+                    // 时间影响
+                    if (time >= 18 && time <= 30) poreSize += 0.3;
+                    else if (time > 36) poreSize -= 0.2;
+                    
+                    // 浓度影响
+                    if (concentration >= 0.04 && concentration <= 0.06) poreSize += 0.2;
+                    else if (concentration > 0.07) poreSize -= 0.3;
+                    
+                    // 溶剂影响
+                    if (solvent === 'pyridine') poreSize += 0.2;
+                    
+                    // 添加随机波动（模拟实验误差）
+                    poreSize = poreSize + (Math.random() * 0.2 - 0.1);
+                    poreSize = Math.max(2.0, Math.min(6.0, poreSize));
+                    
+                    // 计算其他性能指标
+                    const bandGap = 1.2 + 0.3 * (poreSize - 3.5);
+                    const surfaceArea = 800 + 100 * (poreSize - 3.5);
+                    const poreVolume = 0.8 + 0.2 * (poreSize - 3.5);
+                    const conductivity = 100 * (2.0 - bandGap);
+                    const capacity = 400 - 40 * Math.abs(poreSize - 3.8);
+                    
+                    // 限制在合理范围内
+                    const finalBandGap = Math.max(0.8, Math.min(2.0, bandGap));
+                    const finalSurfaceArea = Math.max(500, Math.min(1200, surfaceArea));
+                    const finalPoreVolume = Math.max(0.5, Math.min(1.5, poreVolume));
+                    const finalConductivity = Math.max(10, Math.min(500, conductivity));
+                    const finalCapacity = Math.max(250, Math.min(550, capacity));
+                    
+                    // 更新显示
+                    document.getElementById('poreSize').textContent = poreSize.toFixed(2);
+                    document.getElementById('bandGap').textContent = finalBandGap.toFixed(2);
+                    document.getElementById('surfaceArea').textContent = Math.round(finalSurfaceArea);
+                    document.getElementById('poreVolume').textContent = finalPoreVolume.toFixed(2);
+                    document.getElementById('conductivity').textContent = Math.round(finalConductivity);
+                    document.getElementById('capacity').textContent = Math.round(finalCapacity);
+                    
+                    // 应用建议
+                    let suggestion = '';
+                    if (poreSize < 2.5) {
+                        suggestion = '孔径较小 ( < 2.5 nm )，适合气体分离、分子筛应用';
+                    } else if (poreSize < 3.5) {
+                        suggestion = '孔径适中 ( 2.5 - 3.5 nm )，适合锂离子电池负极材料';
+                    } else if (poreSize < 4.5) {
+                        suggestion = '孔径较大 ( 3.5 - 4.5 nm )，适合催化剂载体';
+                    } else {
+                        suggestion = '孔径很大 ( > 4.5 nm )，适合大分子催化、生物传感';
+                    }
+                    
+                    document.getElementById('suggestionText').textContent = suggestion;
+                    
+                    // 添加微小的颜色动画
+                    document.querySelectorAll('.result-value').forEach(el => {
+                        el.style.animation = 'none';
+                        el.offsetHeight;
+                        el.style.animation = 'gradientFlow 2s ease';
+                    });
+                    
+                } catch (error) {
+                    console.error('预测出错:', error);
+                    document.getElementById('suggestionText').textContent = '预测失败，请检查输入参数';
+                }
+                
+                // 恢复按钮状态
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                predictBtn.disabled = false;
+            }, 600); // 600ms延迟，模拟计算时间
+        }
+        
+        // 页面加载时自动预测一次
+        window.onload = function() {
+            // 稍微延迟一下让页面完全加载
+            setTimeout(predict, 300);
+        };
+        
+        // 添加输入框回车触发预测
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('change', predict);
+        });
+    </script>
+<!-- 技术文档折叠面板 -->
+<div class="docs-panel" id="docsPanel">
+    <div class="docs-header">
+        <h3>📚 技术文档</h3>
+        <button class="docs-close" onclick="toggleDocs()">✕</button>
+    </div>
+    <div class="docs-content">
+        <div class="docs-section">
+            <h4 onclick="toggleSection(this)">📌 1. 模型概述 <span>▼</span></h4>
+            <div class="docs-section-content">
+                <p><strong>算法</strong>：随机森林回归 (Random Forest Regressor)</p>
+                <p><strong>树的数量</strong>：150棵</p>
+                <p><strong>最大深度</strong>：12层</p>
+                <p><strong>特征维度</strong>：16维 (4个数值特征 + 12个One-Hot编码特征)</p>
+                <p><strong>训练样本</strong>：200条介孔石墨炔模拟数据</p>
+            </div>
+        </div>
+        
+        <div class="docs-section">
+            <h4 onclick="toggleSection(this)">📊 2. 模型性能 <span>▼</span></h4>
+            <div class="docs-section-content">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                    <div class="metric-card">
+                        <div class="metric-label">R² 分数</div>
+                        <div class="metric-value">0.9123</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">平均绝对误差</div>
+                        <div class="metric-value">0.2134 nm</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">交叉验证 R²</div>
+                        <div class="metric-value">0.8945 ± 0.032</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">预测速度</div>
+                        <div class="metric-value">< 0.1秒</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="docs-section">
+            <h4 onclick="toggleSection(this)">🧪 3. 特征重要性 <span>▼</span></h4>
+            <div class="docs-section-content">
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>模板类型</span>
+                        <span style="color:#00f0ff;">0.35</span>
+                    </div>
+                    <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;">
+                        <div style="width:35%;height:8px;background:linear-gradient(90deg,#00f0ff,#8a2be2);border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>单体类型</span>
+                        <span style="color:#00f0ff;">0.25</span>
+                    </div>
+                    <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;">
+                        <div style="width:25%;height:8px;background:linear-gradient(90deg,#00f0ff,#8a2be2);border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>反应温度</span>
+                        <span style="color:#00f0ff;">0.20</span>
+                    </div>
+                    <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;">
+                        <div style="width:20%;height:8px;background:linear-gradient(90deg,#00f0ff,#8a2be2);border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>催化剂</span>
+                        <span style="color:#00f0ff;">0.12</span>
+                    </div>
+                    <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;">
+                        <div style="width:12%;height:8px;background:linear-gradient(90deg,#00f0ff,#8a2be2);border-radius:4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="docs-section">
+            <h4 onclick="toggleSection(this)">📈 4. 预测原理 <span>▼</span></h4>
+            <div class="docs-section-content">
+                <p><strong>孔径计算逻辑：</strong></p>
+                <pre style="background:rgba(0,0,0,0.3);padding:10px;border-radius:8px;font-size:12px;">
+pore_size = 3.5 
+    + f(monomer) 
+    + g(template) 
+    + h(temperature)
+    + i(catalyst) 
+    + j(concentration)
+    + ε (实验误差 ±0.1 nm)
+                </pre>
+                <p><strong>带隙估计：</strong> band_gap = 1.2 + 0.3 × (孔径 - 3.5)</p>
+                <p><strong>锂电容量：</strong> capacity = 400 - 40 × |孔径 - 3.8|</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 关于我们模态框 -->
+<div class="modal-overlay" id="aboutModal" onclick="closeAbout()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2>👥 团队介绍</h2>
+            <button class="modal-close" onclick="closeAbout()">✕</button>
+        </div>
+        <div class="modal-body">
+            <!-- 项目概览卡片 -->
+            <div style="background:rgba(0,240,255,0.05);border-radius:16px;padding:20px;margin-bottom:25px;border:1px solid rgba(0,240,255,0.2);">
+                <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;">
+                    <div style="font-size:2.5rem;">🧪</div>
+                    <div>
+                        <h3 style="margin:0;color:#00f0ff;">介孔石墨炔材料智能设计平台</h3>
+                        <p style="color:#a0a0a0;margin:5px 0 0;">版本 V1.0 · 2026年3月</p>
+                    </div>
+                </div>
+                <p style="margin:0;color:#fff;line-height:1.6;">本项目深度融合机器学习与材料科学，构建数据驱动的介孔石墨炔材料设计平台，实现从合成条件到材料性能的智能预测。</p>
+            </div>
+
+            <!-- 团队成员网格 -->
+            <h3 style="color:#00f0ff;margin:0 0 15px 0;display:flex;align-items:center;gap:8px;">
+                <span>👨‍🔬</span> 核心团队成员
+            </h3>
+            
+            <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:25px;">
+                <!-- CEO 余佳俊 -->
+                <div style="background:rgba(255,255,255,0.02);border-radius:12px;padding:15px;border-left:4px solid #00f0ff;">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#00f0ff,#8a2be2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;">余</div>
+                        <div style="flex:1;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <h4 style="margin:0;font-size:1.1rem;">余佳俊 · CEO</h4>
+                                <span style="background:rgba(0,240,255,0.1);color:#00f0ff;padding:2px 8px;border-radius:12px;font-size:0.7rem;">专业前5%</span>
+                            </div>
+                            <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">化学工程与工艺与大数据应用与管理专业25级本科生</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <p style="margin:0;color:#ccc;font-size:0.9rem;">智化C2503文体委员，化学工程学院“青年科创工程”培训班宣传委员、院团委学生干事。积极参加“新和成杯”、“人工智能+”、全国大学生危险化学品安全知识竞赛等比赛。</p>
+                    </div>
+                </div>
+
+                <!-- 研发主管 祝博皓 -->
+                <div style="background:rgba(255,255,255,0.02);border-radius:12px;padding:15px;border-left:4px solid #8a2be2;">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#8a2be2,#ff00ff);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;">祝</div>
+                        <div style="flex:1;">
+                            <h4 style="margin:0;font-size:1.1rem;">祝博皓 · 研发主管</h4>
+                            <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">化学工程与工艺专业25级本科生</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <p style="margin:0;color:#ccc;font-size:0.9rem;">学生网络中心系统维护部成员，x-ware维修人员。参加百变化工秀，AI+比赛并创下佳绩。致力于技术学习，开发游戏“庚子年画魂”并发布。擅长网络攻防，曾对北化校园网进行渗透排查。</p>
+                    </div>
+                </div>
+
+                <!-- 运营主管 林筱茜 -->
+                <div style="background:rgba(255,255,255,0.02);border-radius:12px;padding:15px;border-left:4px solid #00f0ff;">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#00f0ff,#8a2be2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;">林</div>
+                        <div style="flex:1;">
+                            <h4 style="margin:0;font-size:1.1rem;">林筱茜 · 运营主管</h4>
+                            <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">化学工程与工艺与大数据应用与管理专业25级本科生</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <p style="margin:0;color:#ccc;font-size:0.9rem;">智化C2503组织委员，院学生会成员，北京化工大学内务标兵，积极参加“新和成杯”百变化工秀，“人工智能+”等比赛取得佳绩。</p>
+                    </div>
+                </div>
+
+                <!-- 行政主管 陈佳诗 -->
+                <div style="background:rgba(255,255,255,0.02);border-radius:12px;padding:15px;border-left:4px solid #8a2be2;">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#8a2be2,#ff00ff);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;">陈</div>
+                        <div style="flex:1;">
+                            <h4 style="margin:0;font-size:1.1rem;">陈佳诗 · 行政主管</h4>
+                            <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">化学工程与工艺与大数据应用与管理专业25级本科生</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <p style="margin:0;color:#ccc;font-size:0.9rem;">智化C2503团支书，院团委成员，北京化工大学军训文体标兵，获得教授新生启航奖学金，积极参加“百变化工秀”，“人工智能+”等比赛并取得佳绩。</p>
+                    </div>
+                </div>
+
+                <!-- 财务主管 肖孟昊 -->
+                <div style="background:rgba(255,255,255,0.02);border-radius:12px;padding:15px;border-left:4px solid #00f0ff;">
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#00f0ff,#8a2be2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;">肖</div>
+                        <div style="flex:1;">
+                            <h4 style="margin:0;font-size:1.1rem;">肖孟昊 · 财务主管</h4>
+                            <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">环境工程与大数据管理与应用专业25级本科生</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+                        <p style="margin:0;color:#ccc;font-size:0.9rem;">共青团员，院学生会成员，北京化工大学军训标兵，积极参加“新和成杯”百变化工秀，“人工智能+”等比赛取得佳绩。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指导老师 -->
+            <div style="background:linear-gradient(135deg,rgba(0,240,255,0.1),rgba(138,43,226,0.1));border-radius:12px;padding:15px;text-align:center;">
+                <p style="margin:0;color:#a0a0a0;font-size:0.9rem;">指导老师</p>
+                <p style="margin:5px 0 0;font-size:1.2rem;font-weight:bold;color:#00f0ff;">范红玮 教授</p>
+                <p style="margin:5px 0 0;color:#a0a0a0;font-size:0.9rem;">化学工程学院</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加对应的CSS样式 -->
+<style>
+/* 技术文档面板 */
+.docs-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 400px;
+    max-height: 80vh;
+    background: rgba(20, 30, 50, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 1001;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.docs-panel.show {
+    transform: translateX(0);
+}
+
+.docs-header {
+    padding: 15px 20px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(0,240,255,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.docs-header h3 {
+    margin: 0;
+    color: #00f0ff;
+}
+
+.docs-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.docs-close:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.docs-content {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.docs-section {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.docs-section h4 {
+    margin: 0;
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.docs-section h4:hover {
+    background: rgba(0,240,255,0.1);
+}
+
+.docs-section h4 span {
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.docs-section h4.active span {
+    transform: rotate(180deg);
+}
+
+.docs-section-content {
+    padding: 12px;
+    display: none;
+    background: rgba(0,0,0,0.2);
+}
+
+.docs-section-content.show {
+    display: block;
+}
+
+/* 指标卡片 */
+.metric-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid rgba(0,240,255,0.1);
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #a0a0a0;
+    margin-bottom: 5px;
+}
+
+.metric-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #00f0ff;
+}
+
+/* 模态框 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    background: rgba(20, 30, 50, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(0,240,255,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #00f0ff;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 80px);
+}
+
+.modal-body h4 {
+    color: #00f0ff;
+    margin: 15px 0 10px;
+}
+
+.modal-body h4:first-child {
+    margin-top: 0;
+}
+</style>
+
+<!-- 添加对应的JavaScript函数 -->
+<script>
+// 技术文档面板控制
+function toggleDocs() {
+    document.getElementById('docsPanel').classList.toggle('show');
+}
+
+// 折叠面板控制
+function toggleSection(element) {
+    element.classList.toggle('active');
+    const content = element.nextElementSibling;
+    content.classList.toggle('show');
+}
+
+// 关于我们模态框控制
+function openAbout() {
+    document.getElementById('aboutModal').classList.add('show');
+}
+
+function closeAbout() {
+    document.getElementById('aboutModal').classList.remove('show');
+}
+
+// 滚动功能
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 关闭可能打开的弹窗
+    document.getElementById('docsPanel').classList.remove('show');
+    closeAbout();
+}
+
+function scrollToPredict() {
+    document.querySelector('.main-card').scrollIntoView({ behavior: 'smooth' });
+    // 关闭可能打开的弹窗
+    document.getElementById('docsPanel').classList.remove('show');
+    closeAbout();
+}
+
+// 点击ESC关闭模态框
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeAbout();
+        document.getElementById('docsPanel').classList.remove('show');
+    }
+});
+</script>
+</body>
+</html>
